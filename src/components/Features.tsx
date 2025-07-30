@@ -1,8 +1,8 @@
 'use client'
 
 import { motion, useAnimation, useInView } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { Bot, BarChart, Cpu, LayoutDashboard, Database, Zap, Sparkles, Globe, Lock, Code, Users, Bell, ArrowRight } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { Bot, BarChart, Cpu, LayoutDashboard, Database, Zap,  Globe, Lock,  Users,  ArrowRight } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -11,8 +11,7 @@ export function Features() {
   const controls = useAnimation()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: false, amount: 0.1 })
-  const [isHovered, setIsHovered] = useState(false)
-  
+
 
   useEffect(() => {
     if (isInView) {
@@ -247,37 +246,34 @@ export function Features() {
           ))}
         </div>
 
-        <motion.div
-          className="text-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={controls}
-          variants={{
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { delay: 1.0, duration: 0.6 }
-            }
-          }}
+      <motion.div
+        className="text-center mt-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={controls}
+        variants={{
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: { delay: 1.0, duration: 0.6 }
+          }
+        }}
+      >
+      <motion.div
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        className="relative"
+      >
+        <Button 
+          size="lg" 
+          className="px-10 py-7 text-lg font-semibold transition-all duration-300 relative overflow-hidden bg-indigo-600 text-white hover:bg-indigo-700"
         >
-          <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                onHoverStart={() => setIsHovered(true)}
-                onHoverEnd={() => setIsHovered(false)}
-                className="relative"
-              >
-                <Button 
-                  size="lg" 
-                  className={`px-10 py-7 text-lg font-semibold transition-all duration-300 relative overflow-hidden bg-indigo-600 text-white hover:bg-indigo-700'
-                  }`}
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Explore Features
-                  </span>
-                </Button>
-              </motion.div>
-        </motion.div>
+          <span className="relative z-10 flex items-center gap-2">
+            Explore Features
+          </span>
+        </Button>
+      </motion.div>
+      </motion.div>
       </div>
     </motion.section>
   )

@@ -194,7 +194,6 @@ export function Navbar() {
 }
 
 export function Footer() {
-  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   const footerLinks = [

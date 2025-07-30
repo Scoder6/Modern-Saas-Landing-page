@@ -1,8 +1,8 @@
 'use client'
 
-import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useAnimation, useInView } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, Clock, MessageSquare, User, Calendar, Tag, Play, Pause } from 'lucide-react'
+import { ArrowRight, Clock, MessageSquare, User, Calendar, Play, Pause } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -14,53 +14,81 @@ export function BlogResources() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
-// Auto-play when in view
-useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          videoRef.current?.play().catch(e => {
-            // Fallback if autoplay is blocked
-            setIsPlaying(false);
-          });
-          setIsPlaying(true);
-          controls.start("visible");
-        } else {
-          videoRef.current?.pause();
-          setIsPlaying(false);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
 
-  if (videoRef.current) {
-    observer.observe(videoRef.current);
+// useEffect for video handling:
+useEffect(() => {
+  if (isInView) {
+    controls.start("visible")
+    // Try to play video when in view
+    if (videoRef.current && !videoRef.current.hasAttribute('data-user-controlled')) {
+      // Small delay to ensure video is loaded
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.play().then(() => {
+            setIsPlaying(true)
+          }).catch((error) => {
+            console.log('Autoplay failed:', error)
+            // Video will show poster, user can click to play
+          })
+        }
+      }, 100)
+    }
   }
+}, [isInView, controls])
+
+// Enhanced toggleVideoPlayback function:
+const toggleVideoPlayback = () => {
+  if (videoRef.current) {
+    // Mark video as user-controlled
+    videoRef.current.setAttribute('data-user-controlled', 'true')
+    
+    if (isPlaying) {
+      videoRef.current.pause()
+      setIsPlaying(false)
+    } else {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true)
+      }).catch((error) => {
+        console.log('Video play failed:', error)
+      })
+    }
+  }
+}
+
+// Add video event handlers:
+useEffect(() => {
+  const video = videoRef.current
+  if (!video) return
+
+  const handleLoadedData = () => {
+    console.log('Video loaded successfully')
+    // Try to play once loaded if in view
+    if (isInView && !video.hasAttribute('data-user-controlled')) {
+      video.play().then(() => {
+        setIsPlaying(true)
+      }).catch((error) => {
+        console.log('Autoplay after load failed:', error)
+      })
+    }
+  }
+
+  const handlePlay = () => setIsPlaying(true)
+  const handlePause = () => setIsPlaying(false)
+  const handleEnded = () => setIsPlaying(false)
+
+
+  video.addEventListener('loadeddata', handleLoadedData)
+  video.addEventListener('play', handlePlay)
+  video.addEventListener('pause', handlePause)
+  video.addEventListener('ended', handleEnded)
 
   return () => {
-    if (videoRef.current) {
-      observer.unobserve(videoRef.current);
-    }
-  };
-}, [controls]);
-
-// Manual play/pause toggle
-const toggleVideoPlayback = async () => {
-  if (videoRef.current) {
-    if (isPlaying) {
-      await videoRef.current.pause();
-    } else {
-      await videoRef.current.play().catch(e => {
-        // Handle browsers that block autoplay
-        setIsPlaying(false);
-        return;
-      });
-    }
-    setIsPlaying(!isPlaying);
+    video.removeEventListener('loadeddata', handleLoadedData)
+    video.removeEventListener('play', handlePlay)
+    video.removeEventListener('pause', handlePause)
+    video.removeEventListener('ended', handleEnded)
   }
-};
+}, [isInView])
 
   const resources = [
     {
@@ -72,9 +100,7 @@ const toggleVideoPlayback = async () => {
       comments: 12,
       author: "Sarah Chen",
       featured: true,
-videoUrl: "https://cdn.pixabay.com/vimeo/627145886/Business-Team-Meeting-Recording-0-10sec.mp4"
-
-
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
 
     },
     {
@@ -275,18 +301,20 @@ videoUrl: "https://cdn.pixabay.com/vimeo/627145886/Business-Team-Meeting-Recordi
                 </button>
                 
                 {/* Video element */}
-<video
-  ref={videoRef}
-  className="absolute inset-0 w-full h-full object-cover"
-  loop
-  muted
-  playsInline
-  disablePictureInPicture
-  preload="auto"
-  poster="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
->
-  <source src = "https://cdn.pixabay.com/vimeo/627145886/Business-Team-Meeting-Recording-0-10sec.mp4" type="video/mp4" />
-</video>
+                <video
+                  ref={videoRef}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  crossOrigin="anonymous"
+                  poster="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                  style={{ opacity: isPlaying ? 1 : 0.8 }}
+                >
+                  <source src={resources[0].videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
                 
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent z-10 md:hidden" />

@@ -66,6 +66,7 @@ export function Hero() {
             repeat: Infinity,
             ease: "easeInOut"
           }}
+          suppressHydrationWarning
           style={{
             background: 'rgba(99, 102, 241, 0.05)',
             backdropFilter: 'blur(10px)',

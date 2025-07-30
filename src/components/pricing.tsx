@@ -26,12 +26,6 @@ export function Pricing() {
   }, [isInView, controls])
 
   // Calculate custom pricing based on inputs
-  const calculateCustomPrice = () => {
-    const basePrice = 99 // Professional tier base price
-    const wordMultiplier = Math.max(0, (aiWords - 50000) / 10000 * 5);
-    const seatMultiplier = Math.max(0, (userSeats - 10) * 10);
-    return basePrice + wordMultiplier + seatMultiplier;
-  }
 
   const pricingTiers = [
     {

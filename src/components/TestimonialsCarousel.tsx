@@ -4,6 +4,7 @@ import { motion, useAnimation, useInView } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Star, Quote, BadgeCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image';
 
 interface Testimonial {
   id: number;
@@ -22,7 +23,7 @@ const testimonials: Testimonial[] = [
     role: "Marketing Director",
     company: "TechFlow Inc",
     image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=400&h=400&fit=crop&crop=face",
-    content: "ADmyBRAND AI Suite revolutionized our marketing strategy. We saw a 300% increase in engagement within the first month. The AI insights are incredibly accurate and actionable.",
+    content: `ADmyBRAND AI Suite revolutionized our marketing strategy. We saw a 300% increase in engagement within the first month. The AI insights are incredibly accurate and actionable.`,
     rating: 5
   },
   {
@@ -31,7 +32,7 @@ const testimonials: Testimonial[] = [
     role: "CEO",
     company: "Digital Dynamics",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-    content: "The automation capabilities saved us 40 hours per week. Our team can now focus on creative strategy while the AI handles the repetitive tasks perfectly.",
+    content: `The automation capabilities saved us 40 hours per week. Our team can now focus on creative strategy while the AI handles the repetitive tasks perfectly.`,
     rating: 5
   },
   {
@@ -40,7 +41,7 @@ const testimonials: Testimonial[] = [
     role: "Brand Manager",
     company: "Creative Solutions",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    content: "Incredible ROI! Our ad spend efficiency improved by 250%. The predictive analytics helped us identify high-value customers we never knew existed.",
+    content: `Incredible ROI! Our ad spend efficiency improved by 250%. The predictive analytics helped us identify high-value customers we never knew existed.`,
     rating: 5
   },
   {
@@ -49,7 +50,7 @@ const testimonials: Testimonial[] = [
     role: "Growth Hacker",
     company: "StartupBoost",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-    content: "Game-changing tool for startups. The AI-driven content creation is spot-on, and the customer segmentation features are incredibly sophisticated yet easy to use.",
+    content: `Game-changing tool for startups. The AI-driven content creation is spot-on, and the customer segmentation features are incredibly sophisticated yet easy to use.`,
     rating: 5
   }
 ];
@@ -164,9 +165,9 @@ export function Testimonials() {
               Trusted by Marketing Leaders
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground dark:text-muted-foreground/80 max-w-3xl mx-auto">
-            Join thousands of marketing professionals who've transformed their campaigns with our AI-powered suite
-          </p>
+            <p className="text-xl text-muted-foreground dark:text-muted-foreground/80 max-w-3xl mx-auto">
+              Join thousands of marketing professionals who&apos;ve transformed their campaigns with our AI-powered suite
+            </p>
         </motion.div>
 
         {/* Carousel Container */}
@@ -207,15 +208,17 @@ export function Testimonials() {
 
               {/* Testimonial Content */}
               <blockquote className="text-xl md:text-2xl text-center text-foreground dark:text-foreground/90 mb-8 leading-relaxed">
-                "{testimonials[currentIndex].content}"
+                &quot;{testimonials[currentIndex].content}&quot;
               </blockquote>
 
               {/* Author Info */}
               <div className="flex items-center justify-center gap-4">
                 <div className="relative">
-                  <img
+                  <Image
                     src={testimonials[currentIndex].image}
                     alt={testimonials[currentIndex].name}
+                    width={64}  // Add this
+                    height={64} // Add this
                     className="w-16 h-16 rounded-full object-cover ring-2 ring-primary/20"
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-purple-600/20 opacity-30" />
@@ -314,9 +317,11 @@ export function Testimonials() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative">
-                  <img
+                  <Image
                     src={testimonial.image}
                     alt={testimonial.name}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
                   />
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-purple-600/10" />

@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu, X, Sun, Moon, Sparkles } from "lucide-react";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Menu, Sun, Moon, Sparkles } from "lucide-react";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "./ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -186,92 +186,91 @@ const navItems = [
                   <SheetContent 
                     side="right" 
                     className="w-full max-w-xs sm:max-w-sm bg-background/95 backdrop-blur-lg border-l border-border/20"
-                    asChild
+                    onInteractOutside={() => setMobileMenuOpen(false)}
                   >
                     <motion.div
                       initial={{ x: '100%' }}
                       animate={{ x: 0 }}
                       exit={{ x: '100%' }}
                       transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+                      className="flex flex-col h-full"
                     >
-                      <div className="flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-8">
-                          <Link 
-                            href="/" 
-                            className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            ADmyBRAND
-                          </Link>
-                          <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <X className="w-6 h-6" />
-                            </Button>
-                          </SheetTrigger>
-                        </div>
+                      {/* Accessible title (hidden visually) */}
+                      <SheetTitle className="sr-only">Main Navigation</SheetTitle>
+                      
+                      {/* Header with close button */}
+                      <div className="flex items-center justify-between mb-8">
+                        <Link 
+                          href="/" 
+                          className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          ADmyBRAND
+                        </Link>
+                      </div>
 
-                        <nav className="flex-1 space-y-3">
-                          {navItems.map((item) => (
-                            <SheetTrigger asChild key={item.href}>
-                              <motion.div
-                                whileHover={{ x: 5 }}
-                                transition={{ type: "spring", stiffness: 300 }}
-                              >
-                                <Link
-                                  href={item.href}
-                                  className="block px-4 py-3 text-base font-medium transition-colors rounded-lg hover:bg-accent/50"
-                                  onClick={() => setMobileMenuOpen(false)}
-                                >
-                                  {item.name}
-                                </Link>
-                              </motion.div>
-                            </SheetTrigger>
-                          ))}
-                        </nav>
-
-                        <div className="pt-6 mt-auto space-y-4 border-t border-border/20">
-                          <div className="flex justify-center">
-                            {mounted ? (
-                              <Button 
-                                onClick={toggleTheme} 
-                                variant="ghost" 
-                                className="w-full justify-start px-4 py-3 text-base"
-                              >
-                                {theme === "dark" ? (
-                                  <>
-                                    <Sun className="w-5 h-5 mr-3" /> Light Mode
-                                  </>
-                                ) : (
-                                  <>
-                                    <Moon className="w-5 h-5 mr-3" /> Dark Mode
-                                  </>
-                                )}
-                              </Button>
-                            ) : (
-                              <Button variant="ghost" className="w-full justify-start px-4 py-3 text-base" aria-hidden="true">
-                                <div className="w-5 h-5 mr-3" />
-                                <span className="opacity-0">Loading</span>
-                              </Button>
-                            )}
-                          </div>
-                          
-                          <motion.div 
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                      {/* Navigation links */}
+                      <nav className="flex-1 space-y-3">
+                        {navItems.map((item) => (
+                          <motion.div
+                            key={item.href}
+                            whileHover={{ x: 5 }}
+                            transition={{ type: "spring", stiffness: 300 }}
                           >
-                            <Button 
-                              asChild
-                              className="w-full px-6 py-5 text-sm font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                            <Link
+                              href={item.href}
+                              className="block px-4 py-3 text-base font-medium transition-colors rounded-lg hover:bg-accent/50"
+                              onClick={() => setMobileMenuOpen(false)}
                             >
-                              <Link 
-                                href="#contact" 
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                Get Started
-                              </Link>
-                            </Button>
+                              {item.name}
+                            </Link>
                           </motion.div>
+                        ))}
+                      </nav>
+
+                      {/* Footer section */}
+                      <div className="pt-6 mt-auto space-y-4 border-t border-border/20">
+                        <div className="flex justify-center">
+                          {mounted ? (
+                            <Button 
+                              onClick={toggleTheme} 
+                              variant="ghost" 
+                              className="w-full justify-start px-4 py-3 text-base"
+                            >
+                              {theme === "dark" ? (
+                                <>
+                                  <Sun className="w-5 h-5 mr-3" /> Light Mode
+                                </>
+                              ) : (
+                                <>
+                                  <Moon className="w-5 h-5 mr-3" /> Dark Mode
+                                </>
+                              )}
+                            </Button>
+                          ) : (
+                            <Button variant="ghost" className="w-full justify-start px-4 py-3 text-base" aria-hidden="true">
+                              <div className="w-5 h-5 mr-3" />
+                              <span className="opacity-0">Loading</span>
+                            </Button>
+                          )}
                         </div>
+                        
+                        <motion.div 
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <Button 
+                            asChild
+                            className="w-full px-6 py-5 text-sm font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                          >
+                            <Link 
+                              href="#contact" 
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Get Started
+                            </Link>
+                          </Button>
+                        </motion.div>
                       </div>
                     </motion.div>
                   </SheetContent>

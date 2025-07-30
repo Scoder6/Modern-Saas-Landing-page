@@ -231,7 +231,7 @@ export function FAQ() {
               }
             }}
           >
-            {filteredFAQs.map((faq, index) => (
+            {filteredFAQs.map((faq) => (
               <motion.div
                 key={faq.id}
                 variants={{
