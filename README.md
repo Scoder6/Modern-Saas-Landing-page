@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-[![Live Demo Button](https://img.shields.io/badge/View-Live_Demo-green?style=for-the-badge&logo=vercel)](https://https://ad-my-brand-iota.vercel.app/)
+[![Live Demo Button](https://img.shields.io/badge/View-Live_Demo-green?style=for-the-badge&logo=vercel)](https://ad-my-brand-iota.vercel.app/)
 
 A cutting-edge landing page for "ADmyBRAND AI Suite" - a fictional AI-powered marketing tool, built with Next.js 14+, Tailwind CSS, and shadcn/ui components.
 
