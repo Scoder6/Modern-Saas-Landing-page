@@ -3,9 +3,9 @@
 ## 🌐 Live Demo
 
 The project is deployed and live at:  
-🔗 [https://admybrand-ai-suite.vercel.app](https://admybrand-ai-suite.vercel.app)
+🔗 [vIEW]
+(https://admybrand-ai-suite.vercel.app)
 
-[![Live Demo Button](https://img.shields.io/badge/View-Live_Demo-green?style=for-the-badge&logo=vercel)](https://admybrand-ai-suite.vercel.app)
 
 A cutting-edge landing page for "ADmyBRAND AI Suite" - a fictional AI-powered marketing tool, built with Next.js 14+, Tailwind CSS, and shadcn/ui components.
 
